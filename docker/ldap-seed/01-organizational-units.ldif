@@ -1,0 +1,8 @@
+# Create Organizational Units
+dn: ou=people,dc=techcorp,dc=local
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=techcorp,dc=local
+objectClass: organizationalUnit
+ou: groups

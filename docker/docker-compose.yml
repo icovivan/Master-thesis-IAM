@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # OpenLDAP Server - Stores user identities
+  openldap:
+    image: osixia/openldap:1.5.0
+    container_name: thesis-openldap
+    environment:
+      - LDAP_ORGANISATION=${LDAP_ORGANISATION}
+      - LDAP_DOMAIN=${LDAP_DOMAIN}
+      - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
+      - LDAP_CONFIG_PASSWORD=${LDAP_CONFIG_PASSWORD}
+      - LDAP_BASE_DN=${LDAP_BASE_DN}
+    ports:
+      - "389:389"    # LDAP port
+      - "636:636"    # LDAPS (secure) port
+    volumes:
+      - openldap-data:/var/lib/ldap                    # Persist LDAP data
+      - openldap-config:/etc/ldap/slapd.d              # Persist LDAP config
+      - ./ldap-seed:/container/service/slapd/assets/config/bootstrap/ldif/custom  # Load our test users
+    networks:
+      - thesis-network
+    restart: unless-stopped
+
+  # phpLDAPadmin - Web UI to browse LDAP
+  ldap-admin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: thesis-ldap-admin
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=openldap
+      - PHPLDAPADMIN_HTTPS=false
+    ports:
+      - "8080:80"    # Access at http://localhost:8080
+    depends_on:
+      - openldap
+    networks:
+      - thesis-network
+    restart: unless-stopped
+
+  # PostgreSQL - Database for application data
+  postgres:
+    image: postgres:15-alpine
+    container_name: thesis-postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - thesis-network
+    restart: unless-stopped
+
+  # Keycloak - IAM Service (for Phase 2)
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: thesis-keycloak
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - KC_DB_USERNAME=${POSTGRES_USER}
+      - KC_DB_PASSWORD=${POSTGRES_PASSWORD}
+      - KC_HOSTNAME=localhost
+      - KC_HTTP_ENABLED=true
+    command: start-dev
+    ports:
+      - "8081:8080"   # Access at http://localhost:8081
+    depends_on:
+      - postgres
+      - openldap
+    networks:
+      - thesis-network
+    restart: unless-stopped
+
+networks:
+  thesis-network:
+    driver: bridge
+
+volumes:
+  openldap-data:      # Stores LDAP database
+  openldap-config:    # Stores LDAP configuration
+  postgres-data:      # Stores PostgreSQL database

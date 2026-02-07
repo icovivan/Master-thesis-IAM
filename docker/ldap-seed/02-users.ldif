@@ -1,0 +1,108 @@
+# User 1 - John Doe (IT Department, Senior Developer)
+dn: uid=jdoe,ou=people,dc=techcorp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: jdoe
+cn: John Doe
+sn: Doe
+givenName: John
+mail: john.doe@techcorp.local
+userPassword: password123
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/jdoe
+loginShell: /bin/bash
+departmentNumber: IT
+telephoneNumber: +43 1 234 5601
+title: Senior Developer
+
+# User 2 - Jane Smith (HR Department, HR Manager)
+dn: uid=jsmith,ou=people,dc=techcorp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: jsmith
+cn: Jane Smith
+sn: Smith
+givenName: Jane
+mail: jane.smith@techcorp.local
+userPassword: password123
+uidNumber: 10002
+gidNumber: 10002
+homeDirectory: /home/jsmith
+loginShell: /bin/bash
+departmentNumber: HR
+telephoneNumber: +43 1 234 5602
+title: HR Manager
+
+# User 3 - Mike Johnson (Sales Department, Sales Representative)
+dn: uid=mjohnson,ou=people,dc=techcorp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: mjohnson
+cn: Mike Johnson
+sn: Johnson
+givenName: Mike
+mail: mike.johnson@techcorp.local
+userPassword: password123
+uidNumber: 10003
+gidNumber: 10003
+homeDirectory: /home/mjohnson
+loginShell: /bin/bash
+departmentNumber: Sales
+telephoneNumber: +43 1 234 5603
+title: Sales Representative
+
+# User 4 - Sarah Williams (IT Department, DevOps Engineer)
+dn: uid=swilliams,ou=people,dc=techcorp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: swilliams
+cn: Sarah Williams
+sn: Williams
+givenName: Sarah
+mail: sarah.williams@techcorp.local
+userPassword: password123
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/swilliams
+loginShell: /bin/bash
+departmentNumber: IT
+telephoneNumber: +43 1 234 5604
+title: DevOps Engineer
+
+# User 5 - Robert Brown (Finance Department, Financial Analyst)
+dn: uid=rbrown,ou=people,dc=techcorp,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: rbrown
+cn: Robert Brown
+sn: Brown
+givenName: Robert
+mail: robert.brown@techcorp.local
+userPassword: password123
+uidNumber: 10005
+gidNumber: 10005
+homeDirectory: /home/rbrown
+loginShell: /bin/bash
+departmentNumber: Finance
+telephoneNumber: +43 1 234 5605
+title: Financial Analyst
+
+# Groups
+dn: cn=developers,ou=groups,dc=techcorp,dc=local
+objectClass: posixGroup
+cn: developers
+gidNumber: 20001
+memberUid: jdoe
+memberUid: swilliams
+
+dn: cn=managers,ou=groups,dc=techcorp,dc=local
+objectClass: posixGroup
+cn: managers
+gidNumber: 20002
+memberUid: jsmith
