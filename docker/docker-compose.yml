@@ -17,7 +17,6 @@ services:
     volumes:
       - openldap-data:/var/lib/ldap                    # Persist LDAP data
       - openldap-config:/etc/ldap/slapd.d              # Persist LDAP config
-      - ./ldap-seed:/container/service/slapd/assets/config/bootstrap/ldif/custom  # Load our test users
     networks:
       - thesis-network
     restart: unless-stopped
